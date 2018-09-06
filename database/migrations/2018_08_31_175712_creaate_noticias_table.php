@@ -18,15 +18,15 @@ class CreaateNoticiasTable extends Migration
             $table->string('titulo');
             $table->string('foto_principal')->unique();
             $table->string('sintesis');
-            $table->string('cuerpo');
+            $table->string('cuerpo')->nullable();
             $table->string('reportero');
-            $table->string('cedula');
+            $table->string('cedula_reportero')->unique();
             $table->string('clasificacion');
             $table->string('foto1')->unique()->nullable();
             $table->string('foto2')->unique()->nullable();
             $table->string('foto3')->unique()->nullable();
-            $table->timestamp('fecha');
-            $table->foreign('cedula')->references('cedula')->on('users');
+            $table->date('fecha')->nullable();
+            $table->foreign('cedula_reportero')->references('cedula')->on('users')->onDelete("cascade")->onUpdate("cascade");
         });
     }
 
