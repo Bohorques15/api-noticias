@@ -8,6 +8,7 @@ use JWTFactory;
 use JWTAuth;
 use GestorBackend\User;
 use Illuminate\Support\Facades\Auth;
+use GestorBackend\Http\Requests\LoginRequest;
 
 class APILoginController extends Controller
 {

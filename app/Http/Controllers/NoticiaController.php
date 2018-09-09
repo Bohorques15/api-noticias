@@ -5,6 +5,7 @@ namespace GestorBackend\Http\Controllers;
 use Illuminate\Http\Request;
 use GestorBackend\User;
 use GestorBackend\Noticia;
+use GestorBackend\Http\Requests\NoticiaRequest;
 
 class NoticiaController extends Controller
 {
@@ -22,8 +23,9 @@ class NoticiaController extends Controller
     	return $noticias;
     }
 
-    public function noticia_reportero($cedula_reportero){
-    	$noticias = Noticia::where('cedula_reportero',$cedula_reportero)->get();
+    public function noticia_reportero($id){
+    	$user = User::find($id);
+    	$noticias = $user->noticias()->get();
     	return $noticias;
     }
 
@@ -38,6 +40,21 @@ class NoticiaController extends Controller
     }
 
     public function crear_noticia(Request $request){
+    	$validator = Validator::make($request->all(), [
+            'titulo'=> 'required',
+            'foto_principal'=> 'required',
+            'sintesis'=> 'required',
+            'cuerpo'=> 'nullable',
+            'reportero'=> 'required',
+            'clasificacion'=> 'required',
+            'foto1'=> 'nullable',
+            'foto2'=> 'nullable',
+            'foto3'=> 'nullable',
+            'fecha'=> 'required' 
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
     	Noticia::create
 		(
 			[
@@ -46,7 +63,6 @@ class NoticiaController extends Controller
 			'sintesis' => $request->get('sintesis'),
 			'cuerpo' => $request->get('cuerpo'),
 			'reportero' => $request->get('reportero'),
-			'cedula_reportero' => $request->get('cedula_reportero'),
 			'clasificacion' => $request->get('clasificacion'),
 			'foto1' => $request->get('foto1'),
 			'foto2' => $request->get('foto2'),
@@ -66,13 +82,27 @@ class NoticiaController extends Controller
     }
 
     public function actualizar_noticia(Request $request, $id){
+    	$validator = Validator::make($request->all(), [
+            'titulo'=> 'required',
+            'foto_principal'=> 'required',
+            'sintesis'=> 'required',
+            'cuerpo'=> 'nullable',
+            'reportero'=> 'required',
+            'clasificacion'=> 'required',
+            'foto1'=> 'nullable',
+            'foto2'=> 'nullable',
+            'foto3'=> 'nullable',
+            'fecha'=> 'required' 
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
     	$noticia = Noticia::find($id);
     	$noticia->titulo = $request->get('titulo');
 		$noticia->foto_principal = $request->get('foto_principal');
 		$noticia->sintesis = $request->get('sintesis');
 		$noticia->cuerpo = $request->get('cuerpo');
 		$noticia->reportero = $request->get('reportero');
-		$noticia->cedula_reportero = $request->get('cedula_reportero');
 		$noticia->clasificacion = $request->get('clasificacion');
 		$noticia->foto1 = $request->get('foto1');
 		$noticia->foto2 = $request->get('foto2');

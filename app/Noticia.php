@@ -10,7 +10,9 @@ class Noticia extends Model
 {
 	protected $table = 'noticias';
 
-	protected $fillable = ['titulo','foto_principal','sintesis','cuerpo','reportero','cedula_reportero','clasificacion','foto1','foto2','foto3','fecha'];
+	protected $fillable = [
+		'titulo','foto_principal','sintesis','cuerpo','reportero','clasificacion','foto1','foto2','foto3','fecha'
+	];
 
 	public $timestamps = false;
 

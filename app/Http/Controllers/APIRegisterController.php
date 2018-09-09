@@ -8,6 +8,7 @@ use JWTFactory;
 use JWTAuth;
 use Validator;
 use Response;
+use GestorBackend\Http\Requests\UsuarioRequest;
 
 class APIRegisterController extends Controller
 {
@@ -17,7 +18,6 @@ class APIRegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'name' => 'required',
             'password'=> 'required',
-            'cedula' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors());
@@ -25,7 +25,6 @@ class APIRegisterController extends Controller
         User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'cedula' => $request->get('cedula'),
             'password' => bcrypt($request->get('password')),
         ]);
         $user = User::first();
@@ -39,7 +38,6 @@ class APIRegisterController extends Controller
             'email' => 'required|string|email|max:255',
             'name' => 'required',
             'password'=> 'required',
-            'cedula' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors());
@@ -49,7 +47,6 @@ class APIRegisterController extends Controller
         
         $usuario->name = $request->get('name');
         $usuario->email = $request->get('email');
-        $usuario->cedula = $request->get('cedula');
         $usuario->password = bcrypt($request->get('password'));
 
         $usuario->save();

@@ -16,17 +16,18 @@ class CreaateNoticiasTable extends Migration
         Schema::create('noticias', function (Blueprint $table) {
             $table->increments('id');
             $table->string('titulo');
-            $table->string('foto_principal')->unique();
+            $table->string('foto_principal');
             $table->string('sintesis');
             $table->string('cuerpo')->nullable();
             $table->string('reportero');
-            $table->string('cedula_reportero')->unique();
+            $table->string('user_id')->unique();
             $table->string('clasificacion');
             $table->string('foto1')->unique()->nullable();
             $table->string('foto2')->unique()->nullable();
             $table->string('foto3')->unique()->nullable();
-            $table->date('fecha')->nullable();
-            $table->foreign('cedula_reportero')->references('cedula')->on('users')->onDelete("cascade")->onUpdate("cascade");
+            $table->date('fecha');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete("cascade")->onUpdate("cascade");
+            $table->foreign('reportero')->references('name')->on('users')->onDelete("cascade")->onUpdate("cascade");
         });
     }
 
