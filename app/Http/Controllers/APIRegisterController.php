@@ -34,7 +34,9 @@ class APIRegisterController extends Controller
         
         $token = JWTAuth::fromUser($user);
         
-        return Response::json(compact('token'));
+        $mensaje = "Usuario agregado con exito";
+        
+        return Response::json(compact('mensaje','token'));
     }
 
     public function update(Request $request, $id){
