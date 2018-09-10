@@ -20,14 +20,14 @@ class CreaateNoticiasTable extends Migration
             $table->string('sintesis');
             $table->string('cuerpo')->nullable();
             $table->string('reportero');
-            $table->string('user_id')->unique();
+            $table->integer('user_id')->unique();
             $table->string('clasificacion');
             $table->string('foto1')->unique()->nullable();
             $table->string('foto2')->unique()->nullable();
             $table->string('foto3')->unique()->nullable();
             $table->date('fecha');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete("cascade")->onUpdate("cascade");
-            $table->foreign('reportero')->references('name')->on('users')->onDelete("cascade")->onUpdate("cascade");
+            //$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            //$table->foreign('reportero')->references('name')->on('users')->onDelete('cascade')->onUpdate('cascade');;
         });
     }
 
