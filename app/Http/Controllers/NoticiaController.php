@@ -10,7 +10,7 @@ use GestorBackend\Http\Requests\NoticiaRequest;
 class NoticiaController extends Controller
 {
     public function noticia($id){
-    	$noticia = Noticia::find($id);
+    	$noticia = Noticia::with('reportero')->find($id);
     	return $noticia->toJson();
     }
 
