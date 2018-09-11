@@ -13,6 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
+// CORS
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+
+//Rutas
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
