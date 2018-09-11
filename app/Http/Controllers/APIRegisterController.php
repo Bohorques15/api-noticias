@@ -1,12 +1,14 @@
 <?php
 
 namespace GestorBackend\Http\Controllers;
-use GestorBackend\Http\Controllers\Controller;
+use Validator;
 use Illuminate\Http\Request;
+use GestorBackend\Http\Controllers\Controller;
 use GestorBackend\User;
+use GestorBackend\Role;
+use GestorBackend\Noticia;
 use JWTFactory;
 use JWTAuth;
-use Validator;
 use Response;
 use GestorBackend\Http\Requests\UsuarioRequest;
 
@@ -33,8 +35,8 @@ class APIRegisterController extends Controller
         $user = User::first();
         
         $token = JWTAuth::fromUser($user);
-        
-        $mensaje = "Usuario agregado con exito";
+
+        $mensaje = "Usuario creado con exito";
         
         return Response::json(compact('mensaje','token'));
     }
@@ -51,6 +53,8 @@ class APIRegisterController extends Controller
 
         $usuario = User::find($id);
         
+        Noticia::where('user_id', $id)->update(['reportero' => $request->get('name')]);
+
         $usuario->name = $request->get('name');
         $usuario->email = $request->get('email');
         $usuario->password = bcrypt($request->get('password'));

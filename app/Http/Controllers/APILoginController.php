@@ -33,10 +33,8 @@ class APILoginController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
-        $usuario = User::where('email',$request->get('email'));
+        $usuario = User::where('email',$request->get('email'))->first();
 
-
-
-        return response()->json(['name' => $usuario->name, 'email' => $usuario->email, 'password' => $usuario->password, 'token' => $token]);
+        return response()->json(['name' => $usuario->name,'email' => $usuario->email, 'password' => $usuario->password, 'token' => $token]);
     }
 }
