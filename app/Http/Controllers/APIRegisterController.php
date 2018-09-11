@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use GestorBackend\Http\Controllers\Controller;
 use GestorBackend\User;
 use GestorBackend\Role;
+use GestorBackend\Noticia;
 use JWTFactory;
 use JWTAuth;
 use Response;
@@ -52,12 +53,7 @@ class APIRegisterController extends Controller
 
         $usuario = User::find($id);
         
-        //$noticias = Noticia::where('user_id',$id);
-
-        foreach ($usuario->noticias()->get() as $noticia) {
-            $noticia->reportero = $request->get('name');
-            $noticia->save();
-        }
+        Noticia::where('user_id', $id)->update(['reportero' => $request->get('name')]);
 
         $usuario->name = $request->get('name');
         $usuario->email = $request->get('email');
