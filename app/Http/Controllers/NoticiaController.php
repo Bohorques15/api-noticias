@@ -2,16 +2,25 @@
 
 namespace GestorBackend\Http\Controllers;
 
+use Validator;
 use Illuminate\Http\Request;
 use GestorBackend\User;
 use GestorBackend\Noticia;
+use JWTAuth;
 use GestorBackend\Http\Requests\NoticiaRequest;
+
+use Illuminate\Support\Facades\Auth;
+
 
 class NoticiaController extends Controller
 {
     public function noticia($id){
     	$noticia = Noticia::find($id);
-    	return $noticia->toJson();
+        if($noticia){
+            return $noticia->toJson();
+        }
+    	$mensaje = "La noticia no existe";
+        return response()->json(compact('mensaje'));
     }
 
     public function noticia_fecha($fecha_inicio,$fecha_fin){
@@ -20,18 +29,33 @@ class NoticiaController extends Controller
 		$date = date_create($fecha_fin);
 		$fin = date_format($date,"Y-m-d");
 		$noticias = Noticia::where('fecha','>=',$inicio)->where('fecha','<=',$fin)->get();
-    	return $noticias;
+        if($noticias){
+            return $noticias;
+        }
+        $mensaje = "La noticia no existe";
+        return response()->json(compact('mensaje'));
     }
 
     public function noticia_reportero($id){
     	$user = User::find($id);
-    	$noticias = $user->noticias()->get();
-    	return $noticias;
+        if($user){
+            $noticias = $user->noticias()->get();
+            if($noticias){
+                return $noticias;
+            }   
+        }
+        $mensaje = "No hay noticias disponibles";
+        return response()->json(compact('mensaje'));
+    	
     }
 
     public function noticia_clasificacion($clasificacion){
     	$noticias = Noticia::where('clasificacion',$clasificacion)->get();
-    	return $noticias;
+    	if($noticias){
+            return $noticias;
+        }
+        $mensaje = "Las noticias no existen";
+        return response()->json(compact('mensaje'));
     }
 
     public function obtener_noticias(){
@@ -40,6 +64,7 @@ class NoticiaController extends Controller
     }
 
     public function crear_noticia(Request $request){
+
     	$validator = Validator::make($request->all(), [
             'titulo'=> 'required',
             'foto_principal'=> 'required',
@@ -50,7 +75,7 @@ class NoticiaController extends Controller
             'foto1'=> 'nullable',
             'foto2'=> 'nullable',
             'foto3'=> 'nullable',
-            'fecha'=> 'required' 
+            'fecha'=> 'required', 
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors());
@@ -67,7 +92,8 @@ class NoticiaController extends Controller
 			'foto1' => $request->get('foto1'),
 			'foto2' => $request->get('foto2'),
 			'foto3' => $request->get('foto3'),
-			'fecha' => $request->get('fecha')
+			'fecha' => $request->get('fecha'),
+            'user_id' => Auth::user()->id
 			]
 		);
 		$mensaje = "Noticia creada con exito";
@@ -87,7 +113,6 @@ class NoticiaController extends Controller
             'foto_principal'=> 'required',
             'sintesis'=> 'required',
             'cuerpo'=> 'nullable',
-            'reportero'=> 'required',
             'clasificacion'=> 'required',
             'foto1'=> 'nullable',
             'foto2'=> 'nullable',
@@ -102,7 +127,6 @@ class NoticiaController extends Controller
 		$noticia->foto_principal = $request->get('foto_principal');
 		$noticia->sintesis = $request->get('sintesis');
 		$noticia->cuerpo = $request->get('cuerpo');
-		$noticia->reportero = $request->get('reportero');
 		$noticia->clasificacion = $request->get('clasificacion');
 		$noticia->foto1 = $request->get('foto1');
 		$noticia->foto2 = $request->get('foto2');

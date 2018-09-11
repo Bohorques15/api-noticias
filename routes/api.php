@@ -26,11 +26,11 @@ Route::post('user/login', 'APILoginController@login');
 Route::get('noticias/{id}', 'NoticiaController@noticia');
 Route::get('noticias/fecha/{fecha_inicio}/{fecha_fin}', 'NoticiaController@noticia_fecha');
 Route::get('noticias/clasificacion/{clasificacion}', 'NoticiaController@noticia_clasificacion');
-Route::get('noticias/cedula/{id}', 'NoticiaController@noticia_reportero');//--------------- Probar endpoint ----------///
+Route::get('noticias/usuario/{id}', 'NoticiaController@noticia_reportero');
 Route::get('noticias', 'NoticiaController@obtener_noticias');
-Route::post('noticias', 'NoticiaController@crear_noticia')->middleware('jwt.auth', 'role:reportero');
-Route::put('noticias/{id}', 'NoticiaController@actualizar_noticia')->middleware('jwt.auth', 'role:reportero');
-Route::delete('noticias/{id}', 'NoticiaController@borrar_noticia')->middleware('jwt.auth', 'role:reportero');
+Route::post('noticias', 'NoticiaController@crear_noticia')->middleware('jwt.auth');
+Route::put('noticias/{id}', 'NoticiaController@actualizar_noticia')->middleware('jwt.auth');
+Route::delete('noticias/{id}', 'NoticiaController@borrar_noticia')->middleware('jwt.auth');
 
 
 
